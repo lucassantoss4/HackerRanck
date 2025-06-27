@@ -1,30 +1,24 @@
-s='01:01:00AM'
+# Esta versao deve ser aceita pela plataforma
 
 def timeConversion(s):
-    # Write your code here
-    s_hora = s[:2]
-    s_minuto = s[3:5]
-    s_segundos = s[6:8]
+    # Extrai as partes da string de tempo
+    hora_str = s[:2]
+    minuto_segundo = s[2:8] # Pega minutos e segundos juntos
+    periodo = s[8:10]       # AM ou PM
 
-    valoridacao = s[8:10]
-
-
-    if valoridacao == 'AM':
-        if s_hora == '12':
-            horario = f'00:{s_minuto}:{s_segundos}'
-
+    if periodo == 'PM':
+        # Se for PM e a hora for 12, a hora fica 12 (meio-dia)
+        if hora_str == '12':
+            return f"12{minuto_segundo}"
+        # Para outras horas PM (01 a 11), some 12
         else:
-            horario = f'{s_hora}:{s_minuto}:{s_segundos}'
-
-    else:
-        if s_hora == '12':
-            horario = f'24:{s_minuto}:{s_segundos}'
-
+            hora_int = int(hora_str) + 12
+            return f"{hora_int}{minuto_segundo}"
+            
+    else: # Periodo eh 'AM'
+        # Se for AM e a hora for 12, vira 00 (meia-noite)
+        if hora_str == '12':
+            return f"00{minuto_segundo}"
+        # Para outras horas AM (01 a 11), a hora ja esta correta
         else:
-            hora_convert = int(s_hora)
-            horario = f'{hora_convert+12}:{s_minuto}:{s_segundos}'
-            # print(hora_convert)
-
-    return(horario)
-
-print(timeConversion(s))
+            return s[:8] # Retorna a parte HH:MM:SS da string original
